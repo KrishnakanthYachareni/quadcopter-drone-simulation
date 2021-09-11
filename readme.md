@@ -10,7 +10,7 @@ This is a simple drone simulation application developed using gazebo and ros pac
 $ cd <catkin_ws>/src
 $ git clone https://github.com/KrishnakanthYachareni/quadcopter-drone-simulation.git
 $ cd <catkin_ws>
-$ catkin build
+$ catkin_make
 ````
 **Step-2:**
 ```python

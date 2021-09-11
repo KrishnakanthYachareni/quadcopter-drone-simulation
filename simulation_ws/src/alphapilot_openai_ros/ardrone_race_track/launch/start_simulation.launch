@@ -1,0 +1,40 @@
+￼ Gazebo Simulation running <?xml version="1.0"?>
+<launch>
+
+  <!-- set environemnt variables -->
+  <env name="GAZEBO_MODEL_PATH" value="$(find ardrone_race_track)/models:$(find sjtu_drone)/models:$GAZEBO_MODEL_PATH"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="$(find ardrone_race_track):$(find sjtu_drone):$GAZEBO_MODEL_PATH"/>
+
+  <!-- arguments that you can pass to this launch file, for example paused:=true -->
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="recording" default="false"/>
+  <arg name="verbose" default="false"/>
+  <arg name="race_track" default="01"/>
+
+  <!-- specify simulation physics update rate -->
+  <arg name="max_step_size" default="0.001"/>
+  <arg name="real_time_factor" default="1"/>
+  <arg name="real_time_update_rate" default="0.0"/>
+
+  <!-- specify the gazebo world file -->
+  <arg name="world_name" default="$(find ardrone_race_track)/worlds/race_track_$(arg race_track).world"/>
+
+  <!-- set command arguments -->
+  <arg unless="$(arg paused)" name="command_arg1" value=""/>
+  <arg if="$(arg paused)" name="command_arg1" value="-u"/>
+  <arg unless="$(arg recording)" name="command_arg2" value=""/>
+  <arg if="$(arg recording)" name="command_arg2" value="-r"/>
+  <arg unless="$(arg verbose)" name="command_arg3" value=""/>
+  <arg if="$(arg verbose)" name="command_arg3" value="--verbose"/>
+  <arg unless="$(arg debug)" name="script_type" value="gzserver"/>
+  <arg if="$(arg debug)" name="script_type" value="debug"/>
+
+  <!-- start gzserver and load the map -->
+  <node name="gazebo" pkg="sjtu_drone" type="start_gzserver" args="$(arg world_name)" respawn="false"/>
+
+  <!-- start gzclient -->
+  <node name="gui" pkg="sjtu_drone" type="start_gui" args="$(arg world_name)" respawn="false"/>
+
+</launch>

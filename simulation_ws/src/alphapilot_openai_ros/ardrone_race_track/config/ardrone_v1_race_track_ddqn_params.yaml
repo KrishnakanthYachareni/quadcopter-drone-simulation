@@ -1,0 +1,80 @@
+drone: #namespace
+
+  # general parameters
+  node_name: 'ardrone_v1_goto_ddqn'
+  output_dir: 'output'
+
+  checkpoint: False
+  checkpoint_interval: 100
+
+  seed: 543
+
+  log_interval: 10
+
+  # screen parameters
+  screen_height: 180
+  screen_width: 320
+
+  show_image: False
+
+  # ddqn parameters
+  gamma: 0.999
+
+  epsilon_start: 0.9
+  epsilon_end: 0.01
+  epsilon_decay: 500
+
+  batch_size: 128
+  replay_memory_size: 512
+  target_network_update_interval: 20
+
+  nepisodes: 1000
+  nsteps: 1000
+
+  # optimizer parameters
+  lr: 0.001
+
+  n_actions: 7 # We have 7 actions: FORWARDS, BACKWARDS, STRAFE_LEFT, STRAFE_RIGHT, UP, DOWN, STOP
+  n_observations: 8 # We have 8 different observations: x, y, z, r, p, y, sonar value, collision
+
+  # agent parameters
+  linear_forward_speed: 0.5 # Speed for going forwards
+  angular_turn_speed: 0.05  # Linear speed when turning
+  angular_speed: 0.3        # Angular speed when turning Left or Right
+
+  init_linear_speed_vector:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+
+  init_angular_turn_speed: 0.0 # Initial angular speed in shich we start each episode
+
+  min_sonar_value: 0.1 # Minimum meters below wich we consider we have crashed
+  max_sonar_value: 5.0 # This can be retrieved form the sonar topic
+
+  work_space: # 3D workspace area in which the drone is allowed to move
+    x_max: 10.0
+    x_min: -4.0
+    y_max: 10.0
+    y_min: -10.0
+    z_max: 4.0
+    z_min: -1.0
+
+  max_roll: 1.57 # Max roll after which we end the episode
+  max_pitch: 1.57 # Max roll after which we end the episode
+  max_yaw: inf # Max yaw, its 4 because its bigger the pi, its a complete turn actually the maximum
+
+  desired_pose:
+    x: 6.0
+    y: 0.0
+    z: 2.6
+
+  desired_point_epsilon: 0.5 # Error acceptable to consider that it has reached the desired point
+
+  # rewards
+  closer_to_point_reward: 5  # We give points for getting closer to the desired point
+  no_collision_reward: 15    # Points given if we dont' collide with anything
+  end_episode_points: 100    # Points given when ending an episode
+
+  # penalty
+  time_step_penalty: 1       # Penalty we give for each time step, to make the agent learn to reach the goal faster

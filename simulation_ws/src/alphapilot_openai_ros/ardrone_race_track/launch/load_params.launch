@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- arguments that you can pass to this launch file, for example paused:=true -->
+  <arg name="robot" default="ardrone_v1"/>
+  <arg name="model" default="qlearn"/>
+
+  <!-- load model parameters to the ros parameter server -->
+  <rosparam command="load" file="$(find ardrone_race_track)/config/$(arg robot)_race_track_$(arg model)_params.yaml"/>
+
+  <!-- now you can manually run and debug the training script using pycharm, since the parameters have already
+       been loaded into the ros parameter server -->
+
+</launch>

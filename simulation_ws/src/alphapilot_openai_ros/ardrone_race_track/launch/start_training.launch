@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- arguments that you can pass to this launch file, for example paused:=true -->
+  <arg name="robot" default="ardrone_v1"/>
+  <arg name="model" default="qlearn"/>
+
+  <!-- load model parameters to the ros parameter server, reuse the ardrone_race_track load_params.launch file -->
+  <include file="$(find ardrone_race_track)/launch/load_params.launch">
+    <arg name="robot" value="$(arg robot)"/>
+    <arg name="model" value="$(arg model)"/>
+  </include>
+
+  <!-- Launch the training system -->
+  <node pkg="ardrone_race_track" name="$(arg robot)_goto_$(arg model)" type="$(arg robot)_$(arg model).py"
+        output="screen"/>
+
+</launch>

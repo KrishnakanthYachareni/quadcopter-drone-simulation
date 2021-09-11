@@ -1,0 +1,8 @@
+prefix=/home/user/simulation_ws/devel
+
+Name: models_world_tracker
+Description: Description of models_world_tracker
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/user/simulation_ws/devel/lib 
+Requires: 

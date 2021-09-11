@@ -1,0 +1,8 @@
+prefix=/home/user/simulation_ws/devel
+
+Name: ardrone_race_track
+Description: Description of ardrone_race_track
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/user/simulation_ws/devel/lib 
+Requires: 

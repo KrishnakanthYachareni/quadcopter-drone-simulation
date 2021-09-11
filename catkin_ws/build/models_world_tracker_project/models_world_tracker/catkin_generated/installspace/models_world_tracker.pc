@@ -1,0 +1,8 @@
+prefix=/home/user/catkin_ws/install
+
+Name: models_world_tracker
+Description: Description of models_world_tracker
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/user/catkin_ws/install/lib 
+Requires: 

@@ -1,6 +1,10 @@
 
 This is a simple drone simulation application developed using gazebo and ros packages. This drone can be controlled using computer keyboard.
 
+Demo: https://www.youtube.com/watch?v=1vxK8iYLOPc
+
+TODO: Still in progress.
+
 #### Envornment Setup
 1. Linux:    Ubuntu 16.04.6 LTS (Codename: xenial)
 2. ROS-kinetic distribution

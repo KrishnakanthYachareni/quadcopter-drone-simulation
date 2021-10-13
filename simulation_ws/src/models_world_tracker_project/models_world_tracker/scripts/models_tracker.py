@@ -1,50 +1,40 @@
 #!/usr/bin/env python
+from __future__ import print_function
+import roslib
+import sys
 import rospy
-from gazebo_msgs.msg import LinkStates
-from geometry_msgs.msg import Pose
+import cv2
+from std_msgs.msg import String
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
+import uuid
 
-class GazeboLinkPose:
-    link_name = ''
-    link_pose = Pose()
+class image_converter:
+    
+    def __init__(self):
+        self.bridge = CvBridge()
+        self.image_sub = rospy.Subscriber("/drone/down_camera/image_raw",Image,self.callback)
 
-    def __init__(self, link_name):
-        self.link_name = link_name
-        self.link_name_rectified = link_name.replace("::", "_")
-
-        if not self.link_name:
-            raise ValueError("'link_name' is an empty string")
-
-        #Subscribing to gazebo link states which provides scene states
-        self.states_sub = rospy.Subscriber(
-            "/gazebo/link_states", LinkStates, self.callback)
-        
-        # Publishing the gazebo publisher with communication message type as a Pose    
-        self.pose_pub = rospy.Publisher(
-            "/gazebo/" + self.link_name_rectified, Pose, queue_size=10)
-
-    def callback(self, data):
+    def callback(self,data):
         try:
-            ind = data.name.index(self.link_name)
-            self.link_pose = data.pose[ind]
-        except ValueError:
-            pass
+            cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        except CvBridgeError as e:
+            print(e)
 
-
-if __name__ == '__main__':
+        imageId = str(uuid.uuid1())
+        status = cv2.imwrite('/home/user/simulation_ws/droneDownCamData/'+imageId+'.png',cv_image)
+        print("Drone captured an Image with id: ",imageId)
+            
+        # rospy.loginfo(cv_image)
+        
+def main(args):
+    ic = image_converter()
+    rospy.init_node('image_converter', anonymous=True)
     try:
-        # Initializing the new node
-        rospy.init_node('gazebo_link_pose', anonymous=True)
-
-        # Scene base link name will be getting from ./launch/model_tracker.launch file
-        # Base link name is: sjtu_drone::base_link
-        gp = GazeboLinkPose(rospy.get_param('~link_name'))
-        publish_rate = rospy.get_param('~publish_rate', 10)
-
-        rate = rospy.Rate(publish_rate)
-        while not rospy.is_shutdown():
-            # Publising the drone position to the defined topic
-            gp.pose_pub.publish(gp.link_pose)
-            rate.sleep()
-
-    except rospy.ROSInterruptException:
-        pass
+        rospy.spin()
+    except KeyboardInterrupt:
+        print("Shutting down")
+    cv2.destroyAllWindows()
+    
+if __name__ == '__main__':
+    main(sys.argv)

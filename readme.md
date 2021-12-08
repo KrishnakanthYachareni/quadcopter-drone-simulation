@@ -1,3 +1,9 @@
+To access project and execution logon to https://www.theconstructsim.com/the-ros-development-studio-by-the-construct/
+
+ROS Development Studio
+-----------------------
+Username: krishnakanthy
+Password: <common> 
 
 This is a simple drone simulation application developed using gazebo and ros packages. This drone can be controlled using computer keyboard.
 
